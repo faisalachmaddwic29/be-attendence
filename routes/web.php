@@ -13,6 +13,11 @@ Route::get('/login', function () {
 })->name('login');
 
 
+Route::get('/dashboard', function () {
+    return redirect('admin/login');
+})->name('login');
+
+
 Route::group(['middleware' => 'auth'], function () {
     Route::get('absen', Absen::class)->name('absen');
 });

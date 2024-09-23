@@ -24,6 +24,8 @@ class Attendance extends Model
         'end_longitude',
         'start_time',
         'end_time',
+        'start_notes',
+        'end_notes',
     ];
 
     public function user(): BelongsTo

@@ -27,7 +27,7 @@
 
     <div class="container mx-auto ">
         <div class="bg-white p-6 rounded-lg mt-3 shadow-lg">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <form wire:submit.prevent="store" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
                     <h2 class="text-2xl font-bold my-1">Informasi Pegawai</h2>
                     <div class="bg-gray-100 p-4 rounded-lg w-100">
@@ -82,22 +82,28 @@
 
                         </div>
                     </div>
+                    <div class="mt-2 w-full">
+                        <label for="notes" class="text-l font-bold mb-1">Notes : </label>
+                        <textarea class="border border-light rounded-md p-2 h-auto w-full" name="notes" id="notes" rows="5"
+                            style="resize: none" placeholder="Masukan Notes" wire:model="notes"></textarea>
+                    </div>
                 </div>
                 <div>
                     <h2 class="text-2xl font-bold my-1">Attendance</h2>
 
                     <div class="relative h-[400px] mb-4" wire:ignore>
 
-                        <div id="map"></div>
+                        <div id="map" class="rounded-md"></div>
 
                     </div>
 
                     @if (session()->has('error'))
-                        <div class="text-red-400 p-2 border border-red-400 rounded shadow-sm mb-4">{{ session('error') }}
+                        <div class="text-red-400 p-2 border border-red-400 rounded shadow-sm mb-4">
+                            {{ session('error') }}
                         </div>
                     @endif
 
-                    <form class="flex gap-4" wire:submit="store" enctype="multipart/form-data">
+                    <div class="flex gap-4">
                         <button type="button" class="px-4 py-2 bg-blue-500 text-white rounded"
                             onclick="tagLocation()">Absen</button>
                         @if ($isInsideRadius)
@@ -105,9 +111,9 @@
                                 Absen</button>
                         @endif
 
-                    </form>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 
@@ -122,6 +128,8 @@
         let component;
         document.addEventListener("livewire:initialized", function() {
             component = @this;
+            console.log('ini jalan');
+            console.log(component);
             map = L.map('map').setView([{{ $schedule->office->latitude }}, {{ $schedule->office->longitude }}],
                 8);
             // Rustle Tile Lyers

@@ -20,7 +20,9 @@ class AttendanceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 1;
+
+    protected static ?string $navigationGroup = 'Attendance Management';
 
 
     public static function form(Form $form): Form
@@ -107,8 +109,10 @@ class AttendanceResource extends Resource
                     ->getStateUsing(function ($record) {
                         return !$record->isEarlyClockIn();
                     }),
-                Tables\Columns\TextColumn::make('start_time')->label('Clock In'),
-                Tables\Columns\TextColumn::make('end_time')->label('Clock Out'),
+                Tables\Columns\TextColumn::make('start_time')->label('Clock In')
+                    ->description(fn(Attendance $record): ?string => $record->start_notes),
+                Tables\Columns\TextColumn::make('end_time')->label('Clock Out')
+                    ->description(fn(Attendance $record): ?string => $record->end_notes),
 
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()

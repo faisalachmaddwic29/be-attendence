@@ -11,6 +11,7 @@ use Livewire\Component;
 
 class Absen extends Component
 {
+    public $notes;
     public $latitude;
     public $longitude;
     public $isInsideRadius = false;
@@ -24,10 +25,13 @@ class Absen extends Component
 
     public function store()
     {
+
         $this->validate([
             'latitude' => 'required',
             'longitude' => 'required',
+            'notes' => 'nullable',
         ]);
+
 
 
         $schedule = Schedule::where('user_id', Auth::user()->id)->first();
@@ -52,16 +56,23 @@ class Absen extends Component
                     'start_latitude' => $this->latitude,
                     'start_longitude' => $this->longitude,
                     'start_time' => Carbon::now()->toTimeString(),
+                    'start_notes' => $this->notes,
                 ]);
             } else {
                 $attendance->update([
                     'end_latitude' => $this->latitude,
                     'end_longitude' => $this->longitude,
                     'end_time' => Carbon::now()->toTimeString(),
+                    'end_notes' => $this->notes,
                 ]);
             }
 
             return redirect('admin/attendances');
+
+            // session()->flash('message', 'Attendance saved successfully.');
+
+            // // Optionally reset notes after storing
+            // $this->reset('notes');
 
             // return redirect()->route('absen', [
             //     'schedule' => $schedule,
